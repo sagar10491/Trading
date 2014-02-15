@@ -1,0 +1,6 @@
+CREATE USER trading IDENTIFIED BY "trading"; 
+GRANT CONNECT, RESOURCE TO trading;
+create table positions ( optionId  varchar2(100),amount varchar2(100),sourcePlatform  varchar2(100),batStrategyId  varchar2(100),position  varchar2(100),customerId  varchar2(100),currency  varchar2(100),rate    varchar2(100),originalRate  varchar2(100),status   varchar2(100),leveratePositionId  varchar2(100),dateData    varchar2(100),rateUSD     varchar2(100),amountUSD   varchar2(100),id varchar2(100),isAbuseCancel   varchar2(100));
+create table login (id varchar(100),name varchar(100),surname varchar(100),emailid varchar(100),password varchar(100),address varchar(100),brokerid varchar(100),autotrade varchar(100));
+create table broker ( brokerId varchar(100),brokername varchar(100),username  varchar(100),password varchar(100) ,apiurl  varchar(100),site varchar(100) ,apilabel varchar(100));
+insert into broker ( brokerId ,brokername ,username  ,password  ,apiurl  ,site ,apilabel) values ('1','Spot Option','demo@demosite.com','123456','http://www.api.trade.spotoption.com/Api','http://www.spotoption.com','DemoSite');
