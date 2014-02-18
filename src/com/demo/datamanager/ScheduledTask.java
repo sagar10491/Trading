@@ -78,26 +78,31 @@ public class ScheduledTask {
 					}
 				}
 			}
-			
+			return autoTradeClients;
 		} catch (Exception e) {
 			//e.printStackTrace();
-			return null;
+			System.out.println(new Date()+" : Error Occured while getting customers from db , :"+e.getMessage());
 		}finally{
 			try {
-				preparedStatement.close();
+				if(preparedStatement != null)
+					preparedStatement.close();
 			} catch (SQLException e) {
 				//e.printStackTrace();
 			}
 			try {
-				connect.close();
+				if(connect != null)
+					connect.close();
 			} catch (SQLException e) {
 				//e.printStackTrace();
 			}
 		}
-		return autoTradeClients;
+		return null;
 	}
 	
 	private boolean performBestTrade(Map<String,BrokerApiAccess> brokerApiAccessMap){
+		if(brokerApiAccessMap == null)
+			return false;
+		
 		for (Map.Entry<String, BrokerApiAccess> entry : brokerApiAccessMap.entrySet()) {
 			if(!performBestTrade(entry.getValue(), entry.getKey(),true)){
 				try {
@@ -125,9 +130,9 @@ public class ScheduledTask {
 		}catch(Exception exp){
 			if(!newTrade){
 				
-				System.out.println(new Date()+" ,Auto Trade is Failed for customer : "+customerId+", Reason :"+exp.getMessage()+"/n Trying Again");
+				System.out.println(new Date()+" : Auto Trade is Failed for customer : "+customerId+", Reason :"+exp.getMessage()+"/n Trying Again");
 			}else{
-				System.out.println(new Date()+"  ,Auto Trade is Failed Again for customer : "+customerId+", Reason :"+exp.getMessage()+"/n Skipping this product");
+				System.out.println(new Date()+"  : Auto Trade is Failed Again for customer : "+customerId+", Reason :"+exp.getMessage()+"/n Skipping this product");
 
 			}
 		}
