@@ -37,6 +37,7 @@ public class ScheduledTask {
 				Calendar calendar = new GregorianCalendar();
 				TimeZone timeZone = TimeZone.getTimeZone("Europe/London");
 				calendar.setTimeZone(timeZone);
+				System.out.println("Auto Trade Scheduled at Europe time :"+ calendar.getTime());
 				if(calendar.get(Calendar.HOUR_OF_DAY) == 10){
 					
 					if(lastupdated == null){
@@ -49,13 +50,21 @@ public class ScheduledTask {
 						}
 					}
 					if(calendar.get(Calendar.HOUR_OF_DAY ) == 10){
-						lastupdated.setTime(calendar.getTime());
-						performBestTrade(generateCustomer());
+
+						if(performBestTrade(generateCustomer()));
+							lastupdated.setTime(calendar.getTime());
 					}
 				}
 			}
 		};
-		timer.schedule(tt,20000,1000*3600);
+		Calendar cr = Calendar.getInstance(TimeZone.getTimeZone("Europe/London"));
+		cr.set(Calendar.MINUTE, 10);
+		cr.set(Calendar.HOUR_OF_DAY, 10);
+		Calendar currentCalender = Calendar.getInstance(TimeZone.getTimeZone("Europe/London"));
+		if(currentCalender.get(Calendar.HOUR_OF_DAY) > cr.get(Calendar.HOUR_OF_DAY))
+			cr.add(Calendar.DAY_OF_MONTH, 1);
+		
+		timer.schedule(tt,cr.getTimeInMillis()-currentCalender.getTimeInMillis(),24*60*3600);
 	}
 	
 	private Map<String, BrokerApiAccess> generateCustomer(){
